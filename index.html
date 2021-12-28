@@ -247,23 +247,10 @@
         <blockquote>
 <p>准备工具：OpenCore Configurator<br>注意：该方法不适用所有情况～<br>成功环境：BigSur 11.5 ；i5-7200u；HDMI核显输出</p>
 </blockquote>
-<iframe src="//player.bilibili.com/player.html?aid=462052261&bvid=BV1xL411n7hh&cid=380302853&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
-
-<h2 id="1-解锁SIP"><a href="#1-解锁SIP" class="headerlink" title="1 解锁SIP"></a>1 解锁SIP</h2><p>NVRAM-Add-7C436110-AB2A-4BBB-A880-FE41995C9F82-csr-active-config改为FF0F0000</p>
-<p>完成后需要进行重启重置NVRAM</p>
-<h2 id="2-获取Board-ID"><a href="#2-获取Board-ID" class="headerlink" title="2 获取Board-ID"></a>2 获取Board-ID</h2><p>使用OpenCore Configurator打开EFI文件夹中的config.plist，找到SMBIOS里面的Board-ID</p>
-<h2 id="3-挂载系统文件"><a href="#3-挂载系统文件" class="headerlink" title="3 挂载系统文件"></a>3 挂载系统文件</h2><p>mkdir ~/sysmount</p>
-<p>sudo mount -o nobrowse -t apfs /dev/disk1s5 ~/sysmount</p>
-<blockquote>
-<p>/dev/disk1s5为当前系统所在磁盘位置</p>
-</blockquote>
-<h2 id="4-修改文件"><a href="#4-修改文件" class="headerlink" title="4 修改文件"></a>4 修改文件</h2><p>“/System/Library/Extensions/AppleGraphicsControl.kext/Contents/PlugIns/AppleGraphicsDevicePolicy.kext/Contents/Info.plist”</p>
-<p>根据这个目录去修改文件，上面第三步我们将系统文件挂载到了~/sysmonut文件夹下来，直接将/System/Library/Extensions/AppleGraphicsControl.kext文件复制出来，然后根据上面的目录找到Info.plist文件，在文件里面查询第二部获取到的BID，将对应到的string改为none。如果没有找到就查询MAC-，在所在的位置根据<code>&lt;key&gt;BID&lt;/key&gt;&lt;string&gt;none&lt;/string&gt;</code>的格式添加一个。</p>
-<p>修改完之后保存，将这个修改后AppleGraphicsControl.kext文件再移动回去替换。</p>
-<h2 id="5-重建缓存"><a href="#5-重建缓存" class="headerlink" title="5 重建缓存"></a>5 重建缓存</h2><p>sudo chown -R root:wheel ~/sysmount/System/Library/Extensions/<br>sudo chmod -R 755 ~/sysmount/System/Library/Extensions/<br>sudo kmutil install –volume-root ~/sysmount –update-all<br>sudo kcditto</p>
-<h2 id="6-新建快照"><a href="#6-新建快照" class="headerlink" title="6 新建快照"></a>6 新建快照</h2><p>sudo bless –folder ~/sysmount/System/Library/CoreServices –bootefi –create-snapshot</p>
-<p>然后重启即可</p>
-
+<iframe src="//player.bilibili.com/player.html?aid=462052261&bvid=BV1xL411n7hh&cid=380302853&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="80%" height="400px"> </iframe>
+        
+          <a class="article-more-a" href="/2021/09/14/hackintosh-1/#more">more >></a>
+        
       
 
       
@@ -499,6 +486,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">黑苹果</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">教程</a>
               </li>
              
@@ -516,10 +507,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">黑苹果</a>
               </li>
             
             <div class="clearfix"></div>
