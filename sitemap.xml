@@ -70,6 +70,13 @@
   </url>
   
   <url>
+    <loc>https://soft98-top.github.io/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/</loc>
+    <lastmod>2021-12-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://soft98-top.github.io/tags/hexo/</loc>
     <lastmod>2021-12-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -92,13 +99,6 @@
   
   <url>
     <loc>https://soft98-top.github.io/tags/github-io/</loc>
-    <lastmod>2021-12-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://soft98-top.github.io/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/</loc>
     <lastmod>2021-12-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
