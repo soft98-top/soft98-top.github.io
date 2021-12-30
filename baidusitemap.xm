@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://soft98-top.github.io/2021/10/13/flask-1/</loc>
-    <lastmod>2021-12-29</lastmod>
+    <loc>https://soft98-top.github.io/2021/12/29/hexo-1/</loc>
+    <lastmod>2021-12-30</lastmod>
   </url>
   <url>
-    <loc>https://soft98-top.github.io/2021/12/29/hexo-1/</loc>
+    <loc>https://soft98-top.github.io/2021/10/13/flask-1/</loc>
     <lastmod>2021-12-29</lastmod>
   </url>
   <url>
