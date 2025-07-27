@@ -12,15 +12,27 @@ const STATIC_CACHE_URLS = [
 
 const DYNAMIC_CACHE_NAME = 'soft98-navigation-dynamic-v1';
 
-// Install event - cache static resources
+// Install event - cache static resources with error tolerance
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        return cache.addAll(STATIC_CACHE_URLS);
+        // Cache files individually to avoid one failure breaking all
+        return Promise.allSettled(
+          STATIC_CACHE_URLS.map(url => 
+            cache.add(url).catch(error => {
+              console.warn(`Failed to cache ${url}:`, error);
+              return null; // Continue with other files
+            })
+          )
+        );
       })
       .then(() => {
         return self.skipWaiting();
+      })
+      .catch(error => {
+        console.error('Service Worker install failed:', error);
+        return self.skipWaiting(); // Still proceed even if caching fails
       })
   );
 });
@@ -44,7 +56,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch event - serve from cache with network fallback
+// Fetch event - serve from cache with network fallback and better error handling
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
@@ -68,20 +80,62 @@ self.addEventListener('fetch', (event) => {
               // Clone the response
               const responseToCache = response.clone();
 
-              // Cache dynamic content
+              // Cache dynamic content with error handling
               caches.open(DYNAMIC_CACHE_NAME)
                 .then((cache) => {
                   cache.put(request, responseToCache);
+                })
+                .catch(error => {
+                  console.warn(`Failed to cache ${request.url}:`, error);
                 });
 
               return response;
+            })
+            .catch(error => {
+              console.warn(`Failed to fetch ${request.url}:`, error);
+              
+              // For navigation requests, return offline page
+              if (request.mode === 'navigate') {
+                return caches.match('/index.html')
+                  .catch(() => {
+                    // If even the offline page fails, return a basic response
+                    return new Response('Offline - Please check your connection', {
+                      status: 503,
+                      statusText: 'Service Unavailable',
+                      headers: { 'Content-Type': 'text/plain' }
+                    });
+                  });
+              }
+              
+              // For other requests, return a generic error response
+              return new Response('Resource not available', {
+                status: 404,
+                statusText: 'Not Found',
+                headers: { 'Content-Type': 'text/plain' }
+              });
             });
         })
-        .catch(() => {
-          // Return offline page for navigation requests
-          if (request.mode === 'navigate') {
-            return caches.match('/index.html');
-          }
+        .catch(error => {
+          console.warn(`Cache match failed for ${request.url}:`, error);
+          
+          // Fallback to network request
+          return fetch(request).catch(fetchError => {
+            console.warn(`Network request failed for ${request.url}:`, fetchError);
+            
+            if (request.mode === 'navigate') {
+              return new Response('Offline - Please check your connection', {
+                status: 503,
+                statusText: 'Service Unavailable',
+                headers: { 'Content-Type': 'text/plain' }
+              });
+            }
+            
+            return new Response('Resource not available', {
+              status: 404,
+              statusText: 'Not Found',
+              headers: { 'Content-Type': 'text/plain' }
+            });
+          });
         })
     );
   }

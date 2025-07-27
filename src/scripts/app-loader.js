@@ -49,77 +49,122 @@ export class AppLoader {
   }
 
   async fetchAppsData() {
-    const response = await fetch('./apps.json', {
-      cache: 'no-cache',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+    try {
+      const response = await fetch('./apps.json', {
+        cache: 'no-cache',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
       }
-    });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
+      const data = await response.json();
+      
+      // Validate basic structure
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid configuration format: expected object');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Failed to fetch apps data:', error);
+      
+      // Return fallback data structure
+      return {
+        title: 'Soft98\'s Project',
+        description: 'Personal Project Collection',
+        author: 'Soft98',
+        social: {
+          github: 'https://github.com/soft98-top',
+          email: 'soft98@foxmail.com'
+        },
+        apps: []
+      };
     }
-
-    const data = await response.json();
-    
-    // Validate basic structure
-    if (!data || typeof data !== 'object') {
-      throw new Error('Invalid configuration format: expected object');
-    }
-
-    return data;
   }
 
   updatePageInfo(data) {
-    // Update page title
-    if (data.title) {
-      document.title = data.title;
-      const headerTitle = document.querySelector('.site-header h1');
-      if (headerTitle) {
-        headerTitle.textContent = data.title;
+    try {
+      // Update page title
+      if (data.title) {
+        try {
+          document.title = data.title;
+          const headerTitle = document.querySelector('.site-header h1');
+          if (headerTitle) {
+            headerTitle.textContent = data.title;
+          }
+        } catch (error) {
+          console.warn('Failed to update page title:', error);
+        }
       }
+
+      // Update page description
+      if (data.description) {
+        try {
+          const metaDescription = document.querySelector('meta[name="description"]');
+          if (metaDescription) {
+            metaDescription.setAttribute('content', data.description);
+          }
+          
+          const headerSubtitle = document.querySelector('.header-subtitle');
+          if (headerSubtitle) {
+            headerSubtitle.textContent = data.description;
+          }
+        } catch (error) {
+          console.warn('Failed to update page description:', error);
+        }
+      }
+
+      // Update author
+      if (data.author) {
+        try {
+          const metaAuthor = document.querySelector('meta[name="author"]');
+          if (metaAuthor) {
+            metaAuthor.setAttribute('content', data.author);
+          }
+        } catch (error) {
+          console.warn('Failed to update author:', error);
+        }
+      }
+
+      // Update social links
+      if (data.social) {
+        try {
+          if (data.social.github) {
+            const githubLinks = document.querySelectorAll('a[href*="github.com"]');
+            githubLinks.forEach(link => {
+              try {
+                link.href = data.social.github;
+              } catch (error) {
+                console.warn('Failed to update GitHub link:', error);
+              }
+            });
+          }
+
+          if (data.social.email) {
+            const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
+            emailLinks.forEach(link => {
+              try {
+                link.href = `mailto:${data.social.email}`;
+              } catch (error) {
+                console.warn('Failed to update email link:', error);
+              }
+            });
+          }
+        } catch (error) {
+          console.warn('Failed to update social links:', error);
+        }
+      }
+
+      console.log('Page information updated from configuration');
+    } catch (error) {
+      console.error('Failed to update page information:', error);
+      // Continue execution even if page info update fails
     }
-
-    // Update page description
-    if (data.description) {
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute('content', data.description);
-      }
-      
-      const headerSubtitle = document.querySelector('.header-subtitle');
-      if (headerSubtitle) {
-        headerSubtitle.textContent = data.description;
-      }
-    }
-
-    // Update author
-    if (data.author) {
-      const metaAuthor = document.querySelector('meta[name="author"]');
-      if (metaAuthor) {
-        metaAuthor.setAttribute('content', data.author);
-      }
-    }
-
-    // Update social links
-    if (data.social) {
-      if (data.social.github) {
-        const githubLinks = document.querySelectorAll('a[href*="github.com"]');
-        githubLinks.forEach(link => {
-          link.href = data.social.github;
-        });
-      }
-
-      if (data.social.email) {
-        const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
-        emailLinks.forEach(link => {
-          link.href = `mailto:${data.social.email}`;
-        });
-      }
-    }
-
-    console.log('Page information updated from configuration');
   }
 
   validateAppsData() {
@@ -236,15 +281,37 @@ export class AppLoader {
     // Create document fragment for better performance
     const fragment = document.createDocumentFragment();
 
-    // Create and append app cards
+    // Create and append app cards with individual error handling
     sortedApps.forEach((app, index) => {
       try {
+        // Validate app data before rendering
+        if (!app || !app.id || !app.name || !app.url) {
+          console.warn(`Skipping invalid app at index ${index}:`, app);
+          return;
+        }
+
         const cardElement = AppCard.create(app);
-        cardElement.style.animationDelay = `${(index + 1) * 0.1}s`;
-        cardElement.classList.add('app-card-enter');
-        fragment.appendChild(cardElement);
+        if (cardElement) {
+          cardElement.style.animationDelay = `${(index + 1) * 0.1}s`;
+          cardElement.classList.add('app-card-enter');
+          fragment.appendChild(cardElement);
+        } else {
+          console.warn(`Failed to create card element for app "${app.name}"`);
+        }
       } catch (error) {
-        console.error(`Failed to render app card for "${app.name}":`, error);
+        console.error(`Failed to render app card for "${app.name || 'unknown'}":`, error);
+        
+        // Create a fallback error card
+        try {
+          const errorCard = this.createErrorCard(app, error);
+          if (errorCard) {
+            errorCard.style.animationDelay = `${(index + 1) * 0.1}s`;
+            errorCard.classList.add('app-card-enter');
+            fragment.appendChild(errorCard);
+          }
+        } catch (fallbackError) {
+          console.error('Failed to create error card:', fallbackError);
+        }
       }
     });
 
@@ -361,7 +428,46 @@ export class AppLoader {
     });
   }
 
+  createErrorCard(app, error) {
+    const appName = app?.name || 'Unknown App';
+    const appId = app?.id || 'unknown';
+    
+    const errorCardHtml = `
+      <div class="app-card error-card" 
+           data-id="${this.escapeHtml(appId)}"
+           tabindex="0"
+           role="article"
+           aria-label="Error loading application: ${this.escapeHtml(appName)}">
+        <div class="app-image">
+          <div class="error-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <span>Failed to load</span>
+          </div>
+        </div>
+        <div class="app-content">
+          <h3 class="app-title">${this.escapeHtml(appName)}</h3>
+          <p class="app-description">This application failed to load properly. Please try refreshing the page.</p>
+          <div class="app-actions">
+            <button class="btn btn-secondary" onclick="location.reload()" aria-label="Refresh page">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+              </svg>
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = errorCardHtml;
+    return tempDiv.firstElementChild;
+  }
+
   escapeHtml(text) {
+    if (!text) return '';
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
