@@ -3,7 +3,7 @@
 import https from 'https';
 import { URL } from 'url';
 
-const SITE_URL = 'https://apps.soft98.top';
+const SITE_URL = 'https://soft98-top.github.io';
 const TIMEOUT = 30000; // 30 seconds
 const MAX_RETRIES = 5;
 const RETRY_DELAY = 5000; // 5 seconds
