@@ -33,6 +33,7 @@ export class AppLoader {
       const [data] = await Promise.all([loadingPromise, minLoadingTime]);
       
       this.apps = data.apps || [];
+      this.updatePageInfo(data);
       this.validateAppsData();
       this.renderApps();
       this.initializeFilters();
@@ -68,6 +69,57 @@ export class AppLoader {
     }
 
     return data;
+  }
+
+  updatePageInfo(data) {
+    // Update page title
+    if (data.title) {
+      document.title = data.title;
+      const headerTitle = document.querySelector('.site-header h1');
+      if (headerTitle) {
+        headerTitle.textContent = data.title;
+      }
+    }
+
+    // Update page description
+    if (data.description) {
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute('content', data.description);
+      }
+      
+      const headerSubtitle = document.querySelector('.header-subtitle');
+      if (headerSubtitle) {
+        headerSubtitle.textContent = data.description;
+      }
+    }
+
+    // Update author
+    if (data.author) {
+      const metaAuthor = document.querySelector('meta[name="author"]');
+      if (metaAuthor) {
+        metaAuthor.setAttribute('content', data.author);
+      }
+    }
+
+    // Update social links
+    if (data.social) {
+      if (data.social.github) {
+        const githubLinks = document.querySelectorAll('a[href*="github.com"]');
+        githubLinks.forEach(link => {
+          link.href = data.social.github;
+        });
+      }
+
+      if (data.social.email) {
+        const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
+        emailLinks.forEach(link => {
+          link.href = `mailto:${data.social.email}`;
+        });
+      }
+    }
+
+    console.log('Page information updated from configuration');
   }
 
   validateAppsData() {
