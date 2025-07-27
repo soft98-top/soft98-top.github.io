@@ -19,7 +19,7 @@ self.addEventListener('install', (event) => {
       .then((cache) => {
         // Cache files individually to avoid one failure breaking all
         return Promise.allSettled(
-          STATIC_CACHE_URLS.map(url => 
+          STATIC_CACHE_URLS.map(url =>
             cache.add(url).catch(error => {
               console.warn(`Failed to cache ${url}:`, error);
               return null; // Continue with other files
@@ -93,7 +93,7 @@ self.addEventListener('fetch', (event) => {
             })
             .catch(error => {
               console.warn(`Failed to fetch ${request.url}:`, error);
-              
+
               // For navigation requests, return offline page
               if (request.mode === 'navigate') {
                 return caches.match('/index.html')
@@ -106,7 +106,7 @@ self.addEventListener('fetch', (event) => {
                     });
                   });
               }
-              
+
               // For other requests, return a generic error response
               return new Response('Resource not available', {
                 status: 404,
@@ -117,11 +117,11 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(error => {
           console.warn(`Cache match failed for ${request.url}:`, error);
-          
+
           // Fallback to network request
           return fetch(request).catch(fetchError => {
             console.warn(`Network request failed for ${request.url}:`, fetchError);
-            
+
             if (request.mode === 'navigate') {
               return new Response('Offline - Please check your connection', {
                 status: 503,
@@ -129,7 +129,7 @@ self.addEventListener('fetch', (event) => {
                 headers: { 'Content-Type': 'text/plain' }
               });
             }
-            
+
             return new Response('Resource not available', {
               status: 404,
               statusText: 'Not Found',
