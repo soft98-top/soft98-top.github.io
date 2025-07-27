@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Site Configuration Template",
+  "description": "Template for apps.json configuration file",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Site title"
+    },
+    "description": {
+      "type": "string", 
+      "description": "Site description"
+    },
+    "author": {
+      "type": "string",
+      "description": "Site author"
+    },
+    "social": {
+      "type": "object",
+      "properties": {
+        "github": {
+          "type": "string",
+          "format": "uri",
+          "description": "GitHub profile URL"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email"
+        }
+      }
+    },
+    "apps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description", "url", "image", "tags", "status", "featured"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the app"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the app"
+          },
+          "description": {
+            "type": "string",
+            "description": "Short description of the app"
+          },
+          "longDescription": {
+            "type": "string",
+            "description": "Detailed description of the app"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to the live app"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to the source code"
+          },
+          "image": {
+            "type": "string",
+            "description": "Path to preview image"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Technology tags"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "beta", "archived"],
+            "description": "Current status of the app"
+          },
+          "featured": {
+            "type": "boolean",
+            "description": "Whether this is a featured app"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Creation timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time", 
+            "description": "Last update timestamp"
+          }
+        }
+      }
+    }
+  },
+  "required": ["apps"]
+}

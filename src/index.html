@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Soft98 Top - Personal Project Collection and Navigation">
+  <meta name="keywords" content="projects, portfolio, web development, applications">
+  <meta name="author" content="Soft98 Top">
+  <title>Soft98 Top - Project Navigation</title>
+  <link rel="stylesheet" href="./styles/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Resource hints for performance -->
+  <link rel="dns-prefetch" href="https://github.com">
+  <link rel="preload" href="./apps.json" as="fetch" crossorigin>
+  
+  <!-- Service worker registration -->
+  <link rel="manifest" href="./manifest.json">
+</head>
+<body>
+  <div class="page-container">
+    <header class="site-header">
+      <div class="header-content">
+        <h1>Soft98 Top</h1>
+        <p class="header-subtitle">Personal Project Collection</p>
+        <nav class="header-nav" aria-label="Main navigation">
+          <button class="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+          </button>
+          <div class="nav-links">
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="https://github.com/soft98-top" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+    
+    <main class="main-content">
+      <section class="projects-section" id="projects">
+        <div class="section-header">
+          <h2 class="section-title">Featured Projects</h2>
+          <p class="section-description">Explore my collection of web applications and tools</p>
+        </div>
+        
+        <div class="filter-controls" id="filter-controls">
+          <div class="search-container">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+              </svg>
+              <input 
+                type="text" 
+                id="search-input" 
+                class="search-input" 
+                placeholder="Search projects..." 
+                aria-label="Search projects"
+                autocomplete="off"
+              >
+              <button 
+                type="button" 
+                id="clear-search" 
+                class="clear-search" 
+                aria-label="Clear search"
+                style="display: none;"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="filter-container">
+            <div class="filter-header">
+              <span class="filter-label">Filter by tags:</span>
+              <button 
+                type="button" 
+                id="clear-filters" 
+                class="clear-filters"
+                aria-label="Clear all filters"
+                style="display: none;"
+              >
+                Clear all
+              </button>
+            </div>
+            <div class="tag-filters" id="tag-filters" role="group" aria-label="Tag filters">
+              <!-- 动态生成的标签过滤器 -->
+            </div>
+          </div>
+          
+          <div class="results-info" id="results-info" aria-live="polite">
+            <!-- 显示搜索结果数量 -->
+          </div>
+        </div>
+        
+        <div class="app-grid" id="app-grid" role="main" aria-label="Project grid">
+          <!-- 动态生成的应用卡片 -->
+          <div class="loading" role="status" aria-live="polite">
+            <div class="loading-spinner"></div>
+            <span>Loading projects...</span>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p>&copy; 2025 Soft98 Top. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="https://github.com/soft98-top" target="_blank" rel="noopener">GitHub</a>
+          <a href="mailto:contact@soft98-top.github.io">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+  
+  <script type="module" src="./scripts/main.js"></script>
+</body>
+</html>
