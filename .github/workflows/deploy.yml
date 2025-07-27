@@ -31,32 +31,22 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-          cache-dependency-path: 'soft98-top.github.io/package-lock.json'
+          cache-dependency-path: 'package-lock.json'
 
       - name: Install dependencies
-        run: |
-          cd soft98-top.github.io
-          npm ci
+        run: npm ci
 
       - name: Run type checking
-        run: |
-          cd soft98-top.github.io
-          npm run type-check
+        run: npm run type-check
 
       - name: Run linting
-        run: |
-          cd soft98-top.github.io
-          npm run lint
+        run: npm run lint
 
       - name: Run tests
-        run: |
-          cd soft98-top.github.io
-          npm run test:run
+        run: npm run test:run
 
       - name: Build project
-        run: |
-          cd soft98-top.github.io
-          npm run build
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -64,7 +54,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'soft98-top.github.io/dist'
+          path: 'dist'
 
   # Deployment job
   deploy:
