@@ -8,7 +8,7 @@ import { ConfigHelper } from './config-helper.js';
  */
 export class ConfigLoader {
   private static readonly DEFAULT_CONFIG_PATH = '/apps.json';
-  private static readonly CACHE_KEY = 'site-config-cache';
+  // private static readonly CACHE_KEY = 'site-config-cache';
   private static readonly CACHE_DURATION = 5 * 60 * 1000; // 5分钟缓存
 
   private validator: ConfigValidator;
