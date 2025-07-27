@@ -1,10 +1,10 @@
 {
-    "title": "Soft98 Top",
+    "title": "Soft98's Project",
     "description": "Personal Project Collection",
-    "author": "Soft98 Top",
+    "author": "Soft98",
     "social": {
         "github": "https://github.com/soft98-top",
-        "email": "contact@soft98-top.github.io"
+        "email": "soft98@foxmail.com"
     },
     "apps": [
         {
@@ -12,7 +12,7 @@
             "name": "Time Tracker",
             "description": "A flexible time management tool based on the Pomodoro Technique with enhanced state switching",
             "longDescription": "Features personalized configuration, statistics & analytics, smart notifications, PWA support, responsive design, data persistence, and exception recovery for better productivity",
-            "url": "https://soft98-top.github.io/time-tracker",
+            "url": "https://apps.soft98.top/time-tracker",
             "sourceUrl": "https://github.com/soft98-top/time-tracker",
             "image": "assets/time-tracker-preview.png",
             "tags": [
@@ -25,8 +25,8 @@
             ],
             "status": "active",
             "featured": true,
-            "createdAt": "2024-01-01T00:00:00Z",
-            "updatedAt": "2025-01-26T00:00:00Z"
+            "createdAt": "2025-07-27T00:00:00Z",
+            "updatedAt": "2025-07-27T00:00:00Z"
         }
     ]
 }
