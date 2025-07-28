@@ -12,7 +12,7 @@
             "name": "Time Tracker",
             "description": "A flexible time management tool based on the Pomodoro Technique with enhanced state switching",
             "longDescription": "Features personalized configuration, statistics & analytics, smart notifications, PWA support, responsive design, data persistence, and exception recovery for better productivity",
-            "url": "https://apps.soft98.top/time-tracker",
+            "url": "https://apps.soft98.top/time-tracker/",
             "sourceUrl": "https://github.com/soft98-top/time-tracker",
             "image": "assets/time-tracker-preview.png",
             "tags": [
